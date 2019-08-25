@@ -1,1 +1,1 @@
-Here's the code for my blog post
+Here's the code for my [blog post](http://www.marcusoft.net/2019/08/scraping-functionally-to-save-my-inheritance.html)
