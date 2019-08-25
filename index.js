@@ -50,9 +50,9 @@ const parseQuote = async htmlString => {
 // getQuoteHtmlString('http://abbesays.apphb.com/Quotes/77').then(parseQuote).then(console.log)
 
 const getQuotes = async links => {
+  console.log(`Starting to handle ${links.length} quotes`)
   const parsedQuotesPromises =
     links.map(async link => {
-      console.log(`${link} being processed`)
       const quoteHtml = await getQuoteHtmlString(link)
       return parseQuote(quoteHtml)
     })
@@ -60,7 +60,25 @@ const getQuotes = async links => {
   return Promise.all(parsedQuotesPromises)
 }
 
+const flattenArray = async arr => {
+  return new Promise((resolve) => resolve(arr.flat()))
+}
+
+const writeAllQuotesFile = async data =>
+  new Promise((resolve, reject) => {
+    const fs = require('fs')
+    const filename = './allQuotes.json'
+
+    fs.writeFile(filename, JSON.stringify(data), 'utf8', (err) => {
+      if (err) reject(err)
+      resolve(`${filename} created with ${data.length} quotes`)
+    })
+  })
+// writeAllQuotesFile(kids).then(console.log)
+
 const kids = ['Albert', 'Arvid', 'Gustav']
+
+console.time('Get them')
 
 Promise.all(
   kids.map(async kid =>
@@ -68,5 +86,9 @@ Promise.all(
       .then(parseLinks)
       .then(getQuotes)
   ))
-  .then(kidQuotes => kidQuotes.flat())
-  .then(console.table)
+  .then(flattenArray)
+  .then(writeAllQuotesFile)
+  .then(r => {
+    console.timeEnd('Get them')
+    console.log(r)
+  })

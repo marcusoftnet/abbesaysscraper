@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "prestart": "standard",
+    "start": "node index.js",
+    "poststart": "cat allQuotes.json"
   },
   "keywords": [],
   "author": "",
