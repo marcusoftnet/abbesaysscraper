@@ -53,6 +53,7 @@ const getQuotes = async links => {
   console.log(`Starting to handle ${links.length} quotes`)
   const parsedQuotesPromises =
     links.map(async link => {
+      console.log(`${link} is being handle`)
       const quoteHtml = await getQuoteHtmlString(link)
       return parseQuote(quoteHtml)
     })
